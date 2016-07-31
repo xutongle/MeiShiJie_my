@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_fragmentGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"></FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/navigationGroup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+            style="@style/navigationStyle"
+            android:id="@+id/tuijian"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="推荐"
+            app:DrawableTop="@drawable/recommend_selector"
+            app:DrawableSize="35dp"
+            />
+
+        <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/faxain"
+            android:text="发现"
+            style="@style/navigationStyle"
+            app:DrawableTop="@drawable/discover_selector"
+            app:DrawableSize="35dp"
+            />
+
+        <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/shangcheng"
+            android:text="商城"
+            style="@style/navigationStyle"
+            app:DrawableTop="@drawable/shop_selector"
+            app:DrawableSize="35dp"
+            />
+
+        <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/shihua"
+            android:text="食话"
+            style="@style/navigationStyle"
+            app:DrawableTop="@drawable/topic_selector"
+            app:DrawableSize="35dp"
+            />
+
+        <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/wode"
+            android:text="我的"
+            style="@style/navigationStyle"
+            app:DrawableTop="@drawable/wode_selector"
+            app:DrawableSize="35dp"
+            />
+    </RadioGroup>
+
+</LinearLayout>

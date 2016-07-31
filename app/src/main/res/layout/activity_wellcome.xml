@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_wellcome"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.weibo.meishijie.view.activity.WellcomeActivity">
+
+    <com.weibo.meishijie.view.custom.JumpViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wellcome_Viewpager"
+        android:visibility="gone"
+        >
+    </com.weibo.meishijie.view.custom.JumpViewPager>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:id="@+id/image_wellcom"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/zuire_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:paddingTop="10dp"
+        android:id="@+id/zuire_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="zuire_title" />
+
+    <com.weibo.meishijie.view.custom.NavigationBar_RadioButton
+        app:DrawableLeft="@mipmap/yyxx_icon_high"
+        app:DrawableSize="30dp"
+        android:button="@null"
+        android:id="@+id/priceandguide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="priceandguide"
+        />
+
+</LinearLayout>
