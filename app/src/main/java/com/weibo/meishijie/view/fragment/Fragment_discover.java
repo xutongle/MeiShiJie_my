@@ -5,7 +5,8 @@ import com.weibo.meishijie.base.BaseFragment;
 
 public class Fragment_discover extends BaseFragment {
 
-    public Fragment_discover() {}
+    public Fragment_discover() {
+    }
 
     public static Fragment_discover newInstance() {
         Fragment_discover fragment = new Fragment_discover();

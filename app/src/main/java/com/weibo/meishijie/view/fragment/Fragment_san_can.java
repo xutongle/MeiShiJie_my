@@ -1,10 +1,8 @@
 package com.weibo.meishijie.view.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.weibo.meishijie.R;
@@ -12,87 +10,50 @@ import com.weibo.meishijie.base.BaseFragment;
 import com.weibo.meishijie.bean.recommend.Obj;
 import com.weibo.meishijie.bean.recommend.San_can;
 import com.weibo.meishijie.bean.recommend.San_can_titles;
+import com.weibo.meishijie.util.CacheUtil;
 import com.weibo.meishijie.util.DLog;
-import com.weibo.meishijie.util.ImageLoader;
-import com.weibo.meishijie.util.MainApp;
+import com.weibo.meishijie.view.custom.IrregularImageView;
 
 import butterknife.BindView;
 
+import static com.weibo.meishijie.R.id.irr_iv;
+
 public class Fragment_san_can extends BaseFragment {
 
-    @BindView(R.id.titlepic1)
-    ImageView titlepic1;
-    @BindView(R.id.subtitle1)
-    TextView subtitle1;
-    @BindView(R.id.title1)
-    TextView title1;
-    @BindView(R.id.titlepic2)
-    ImageView titlepic2;
-    @BindView(R.id.subtitle2)
-    TextView subtitle2;
-    @BindView(R.id.title2)
-    TextView title2;
-    @BindView(R.id.titlepic3)
-    ImageView titlepic3;
-    @BindView(R.id.subtitle3)
-    TextView subtitle3;
-    @BindView(R.id.title3)
-    TextView title3;
+    @BindView(R.id.irr_iv)
+    IrregularImageView irr_iv;
     @BindView(R.id.scan_can_title)
     TextView scanCanTitle;
     @BindView(R.id.scan_can_subtitle)
     TextView scanCanSubtitle;
 
     public static final String CUURRENTPAGER = "currentpager",OBJ_TAG = "obj";
-    private int current;
+    private int current,c;
     private Obj obj;
+
+    private void initView(){
+        San_can[] san_can = obj.getSan_can();
+        San_can_titles[] san_can_titles = obj.getSan_can_titles();
+
+        c = current * 3;
+        San_can san_can1 = san_can[c];
+        San_can san_can2 = san_can[c + 1];
+        San_can san_can3 = san_can[c + 2];
+        San_can_titles san_can_title = san_can_titles[current];
+
+        irr_iv.setAllTitleAndDescr(san_can1.getTitle(),san_can1.getDescr(),san_can2.getTitle(),
+                san_can2.getDescr(),san_can3.getTitle(),san_can3.getDescr());
+
+        irr_iv.setTitlePic(san_can1.getTitlepic(),san_can2.getTitlepic(),san_can3.getTitlepic());
+
+        scanCanTitle.setText(san_can_title.getTitle());
+        scanCanSubtitle.setText(san_can_title.getSub_title());
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView();
-    }
-
-    private void initView(){
-        //subtitle一个对应三张图片，例如第一个subtitle对应0,1,2，第二个对应3,4,5
-        San_can[] san_can = obj.getSan_can();
-        San_can_titles[] san_can_titles = obj.getSan_can_titles();
-        int length = san_can_titles.length;
-        if (current == length + 1){
-            current = 0;
-        }else if (current == 0){
-            current = length - 1;
-        }else {
-            current -= 1;
-        }
-        int i = (current) * 3;
-
-        San_can san_can1 = san_can[i];
-        title1.setText(san_can1.getTitle());
-        subtitle1.setText(san_can1.getDescr());
-        ImageLoader.load(MainApp.getAppContext(),san_can1.getTitlepic(),titlepic1);
-
-        San_can san_can2 = san_can[i+1];
-        title2.setText(san_can2.getTitle());
-        subtitle2.setText(san_can2.getDescr());
-        ImageLoader.load(MainApp.getAppContext(),san_can2.getTitlepic(),titlepic2);
-
-        San_can san_can3 = san_can[i+2];
-        title3.setText(san_can3.getTitle());
-        subtitle3.setText(san_can3.getDescr());
-        ImageLoader.load(MainApp.getAppContext(),san_can3.getTitlepic(),titlepic3);
-
-        setTextColor(title1,subtitle1,title2,subtitle2,title3,subtitle3);
-
-        San_can_titles san_can_title = san_can_titles[current];
-        scanCanTitle.setText(san_can_title.getTitle());
-        scanCanSubtitle.setText(san_can_title.getSub_title());
-    }
-
-    private void setTextColor(TextView...views){
-        for (TextView v : views) {
-            v.setTextColor(Color.WHITE);
-        }
     }
 
     public static Fragment_san_can newInstance(int current, Obj obj) {
@@ -121,4 +82,15 @@ public class Fragment_san_can extends BaseFragment {
 
     public Fragment_san_can() {}
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        irr_iv.recycle();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        CacheUtil.fluchCache();
+    }
 }

@@ -23,6 +23,7 @@ public class MainApp extends Application {
         sp = this.getSharedPreferences("meishijie",MODE_PRIVATE);
         context = getApplicationContext();
         service = Executors.newCachedThreadPool();
+        CacheUtil.initCache(this);
     }
 
     public static SharedPreferences getSp(){

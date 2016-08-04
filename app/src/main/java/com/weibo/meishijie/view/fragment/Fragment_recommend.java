@@ -20,8 +20,10 @@ import com.weibo.meishijie.bean.recommend.Recomend;
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
 import com.weibo.meishijie.presenter.recommend.RecommentView;
 import com.weibo.meishijie.presenter.recommend.imp.RecommendPresenterImp;
+import com.weibo.meishijie.util.DLog;
+import com.weibo.meishijie.util.Internet_utils;
 import com.weibo.meishijie.view.activity.MainActivity;
-import com.weibo.meishijie.view.custom.ADViewpager;
+import com.weibo.meishijie.view.custom.ADViewpager_san_can;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
     @BindView(R.id.zuireshangpin_Recycleview)
     RecyclerView zuireshangpin_re;
 
-    private ADViewpager adViewpager;
+    private ADViewpager_san_can adViewpagerSancan;
 
     private HeaderdAndFooterWrapper headerdAndFooterWrapper;
     private MainActivity mainActivity;
@@ -65,23 +67,28 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
 
     }
 
-    private void addScan_canViewpager(Obj obj) {
+    @Override
+    public void detectionNet() {
+        Internet_utils.checkNetwork(mainActivity);
+    }
 
+    private void addScan_canViewpager(Obj obj) {
         List<Fragment> fragments = new ArrayList<>();
-        int length = obj.getSan_can_titles().length + 2;
+        int length = obj.getSan_can_titles().length;
         for (int i = 0; i < length; i++) {
             fragments.add(Fragment_san_can.newInstance(i, obj));
         }
 
-        adViewpager = new ADViewpager(mainActivity);
-        adViewpager.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        adViewpager.setIcon(R.mipmap.recipes_select_false, R.mipmap.recipes_select_true);
-        adViewpager.setIconGravity(Gravity.CENTER);
-        adViewpager.setAdapter(new FragmentViewPagerAdapter(fragments, getChildFragmentManager()));
+        adViewpagerSancan = new ADViewpager_san_can(mainActivity);
+        adViewpagerSancan.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        adViewpagerSancan.setIcon(R.mipmap.recipes_select_false, R.mipmap.recipes_select_true);
+        adViewpagerSancan.setIconGravity(Gravity.CENTER);
+        adViewpagerSancan.setAdapter(new FragmentViewPagerAdapter(fragments, getChildFragmentManager()));
 
         setTime();
 
-        headerdAndFooterWrapper.addHearderView(adViewpager);
+        headerdAndFooterWrapper.addHearderView(adViewpagerSancan);
     }
 
     private void setTime() {
@@ -102,15 +109,15 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         if (hour > 22 && hour <= 24){
-            adViewpager.setCurrentItem(5);
+            adViewpagerSancan.setCurrentItem(5);
         } else if (hour >= 20 && hour <= 22) {
-            adViewpager.setCurrentItem(4);
+            adViewpagerSancan.setCurrentItem(4);
         } else if (hour >= 14 && hour <= 16) {
-            adViewpager.setCurrentItem(3);
+            adViewpagerSancan.setCurrentItem(3);
         } else if (hour < 14 && hour > 11) {
-            adViewpager.setCurrentItem(2);
+            adViewpagerSancan.setCurrentItem(2);
         } else if (hour > 8 && hour <= 10) {
-            adViewpager.setCurrentItem(1);
+            adViewpagerSancan.setCurrentItem(1);
         }
         c.clear();
     }

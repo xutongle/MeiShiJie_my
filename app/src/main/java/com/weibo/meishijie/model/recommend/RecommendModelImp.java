@@ -1,6 +1,8 @@
 package com.weibo.meishijie.model.recommend;
 
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
+import com.weibo.meishijie.util.Internet_utils;
+import com.weibo.meishijie.util.MainApp;
 import com.weibo.meishijie.util.OkUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,6 +33,11 @@ public class RecommendModelImp implements RecommendModel {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void NetError() {
 
     }
 }

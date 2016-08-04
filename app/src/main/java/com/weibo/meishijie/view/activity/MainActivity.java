@@ -8,6 +8,7 @@ import android.widget.RadioGroup;
 
 import com.weibo.meishijie.R;
 import com.weibo.meishijie.base.BaseActivity;
+import com.weibo.meishijie.util.CacheUtil;
 import com.weibo.meishijie.util.Constant;
 import com.weibo.meishijie.util.MainApp;
 import com.weibo.meishijie.view.fragment.Fragment_discover;
@@ -60,20 +61,26 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     public void onBackPressed() {
         if (fm.getBackStackEntryCount() == 0){
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setCancelable(true)
                     .setTitle("提示")
                     .setMessage("确定退出吗？")
                     .setPositiveButton("确定", (dialogInterface, i) -> {
                         exit();
-                        MainApp.destroyPool();
-                        MainApp.closeSp();
                     })
                     .setNeutralButton("取消", (dialogInterface, i) -> {
                         dialogInterface.dismiss();
                     })
                     .show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CacheUtil.clearMemoryCache();
+        MainApp.destroyPool();
+        MainApp.closeSp();
     }
 
     private void showFragment(String tag) {
