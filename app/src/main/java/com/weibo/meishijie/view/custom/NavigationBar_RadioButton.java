@@ -11,6 +11,27 @@ import com.weibo.meishijie.R;
 public class NavigationBar_RadioButton extends RadioButton {
 
     private int mDrawableSize;// xml文件中设置的大小
+    private Drawable drawableLeft = null, drawableTop = null, drawableRight = null, drawableBottom = null;
+
+    public void setmDrawableSize(int mDrawableSize) {
+        this.mDrawableSize = mDrawableSize;
+    }
+
+    public void setDrawableLeft(Drawable drawableLeft) {
+        this.drawableLeft = drawableLeft;
+    }
+
+    public void setDrawableTop(Drawable drawableTop) {
+        this.drawableTop = drawableTop;
+    }
+
+    public void setDrawableRight(Drawable drawableRight) {
+        this.drawableRight = drawableRight;
+    }
+
+    public void setDrawableBottom(Drawable drawableBottom) {
+        this.drawableBottom = drawableBottom;
+    }
 
     public NavigationBar_RadioButton(Context context) {
         this(context, null, 0);
@@ -22,10 +43,7 @@ public class NavigationBar_RadioButton extends RadioButton {
 
     public NavigationBar_RadioButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);//TODO Auto-generated constructor stub
-        Drawable drawableLeft = null, drawableTop = null,
-                drawableRight = null, drawableBottom = null;
-        TypedArray a = context.obtainStyledAttributes(
-                attrs, R.styleable.NavigationBar_RadioButton);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NavigationBar_RadioButton);
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
@@ -56,8 +74,7 @@ public class NavigationBar_RadioButton extends RadioButton {
                 drawableLeft, drawableTop, drawableRight, drawableBottom);
     }
 
-    public void setCompoundDrawablesWithIntrinsicBounds(
-            Drawable left, Drawable top,Drawable right, Drawable bottom) {
+    public void setCompoundDrawablesWithIntrinsicBounds(Drawable left, Drawable top,Drawable right, Drawable bottom) {
         if (mDrawableSize == 0){
             mDrawableSize = 30;
         }

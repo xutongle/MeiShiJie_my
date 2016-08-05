@@ -13,6 +13,8 @@ import com.weibo.meishijie.R;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static android.R.attr.id;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static butterknife.ButterKnife.bind;
 
 /**
@@ -22,10 +24,11 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract int getLayoutId();
     private Unbinder unbinder;
+    protected View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(),container,false);
+        view = inflater.inflate(getLayoutId(),container,false);
         unbinder = ButterKnife.bind(this,view);
         return view;
     }
@@ -39,5 +42,13 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public BaseFragment() {}
+
+    protected <T extends View> T findView(View v,int id){
+        return (T) v.findViewById(id);
+    }
+
+    protected <T extends View> T findView(int id){
+        return (T) view.findViewById(id);
+    }
 
 }

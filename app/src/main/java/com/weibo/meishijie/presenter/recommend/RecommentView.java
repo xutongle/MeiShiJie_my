@@ -8,5 +8,4 @@ import com.weibo.meishijie.bean.recommend.Recomend;
 
 public interface RecommentView {
     void limnView(Recomend recomend);
-    void detectionNet();
 }

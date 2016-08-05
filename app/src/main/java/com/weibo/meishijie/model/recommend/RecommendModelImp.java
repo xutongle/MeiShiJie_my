@@ -36,8 +36,4 @@ public class RecommendModelImp implements RecommendModel {
 
     }
 
-    @Override
-    public void NetError() {
-
-    }
 }

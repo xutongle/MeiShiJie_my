@@ -26,7 +26,6 @@ public class RecommendPresenterImp implements RecommendPresenter{
 
     @Override
     public void onStart() {
-        recommentView.detectionNet();
         model = new RecommendModelImp(this);
         model.Load();
     }
