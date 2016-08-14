@@ -1,6 +1,7 @@
 package com.weibo.meishijie.presenter.recommend.imp;
 
-import com.weibo.meishijie.bean.recommend.Recomend;
+import com.weibo.meishijie.bean.recommend.Recommend;
+import com.weibo.meishijie.bean.recommend.youlike.YouLike;
 import com.weibo.meishijie.model.recommend.RecommendModel;
 import com.weibo.meishijie.model.recommend.RecommendModelImp;
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
@@ -26,9 +27,20 @@ public class RecommendPresenterImp implements RecommendPresenter{
     }
 
     @Override
-    public void OnloadDataSuccess(Recomend recomend) {
-        recommentView.limnView(recomend);
+    public void OnloadDataSuccess(Recommend recommend) {
+        recommentView.limnView(recommend);
     }
+
+    @Override
+    public void loadYouLike() {
+        model.loadYouLikeData();
+    }
+
+    @Override
+    public void OnloadYouLikeDataSuccess(YouLike youLike) {
+        recommentView.loadYoulikeDataSuccess(youLike);
+    }
+
 
     @Override
     public void OnloadDataError(Throwable throwable) {

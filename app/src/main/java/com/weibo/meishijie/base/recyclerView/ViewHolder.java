@@ -55,7 +55,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         textView.setText(text);
     }
 
-    public void setTextAddColor(int id,String text,int color){
+    public void setTextAndColor(int id,String text,int color){
         TextView textView = getView(id);
         textView.setText(text);
         textView.setTextColor(color);

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context="com.weibo.meishijie.view.fragment.Fragment_recommend">
+    >
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

@@ -38,7 +38,6 @@ public class HeaderdAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
-        DLog.info("===" + viewType);
         if (headerViews.get(viewType) != null){
             view = headerViews.get(viewType);
         }else if (footerViews.get(viewType) != null){

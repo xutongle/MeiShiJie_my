@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by 美貌与智慧并重的男子 on 2016/7/30.
  */
 
-public class Recomend implements Parcelable {
+public class Recommend implements Parcelable {
     /**
      * code: "11",
      obj: {}
@@ -15,10 +15,10 @@ public class Recomend implements Parcelable {
     private int code;
     private Obj obj;
 
-    public Recomend() {
+    public Recommend() {
     }
 
-    public Recomend(int code, Obj obj) {
+    public Recommend(int code, Obj obj) {
         this.code = code;
         this.obj = obj;
     }
@@ -58,20 +58,20 @@ public class Recomend implements Parcelable {
         dest.writeParcelable(this.obj, flags);
     }
 
-    protected Recomend(Parcel in) {
+    protected Recommend(Parcel in) {
         this.code = in.readInt();
         this.obj = in.readParcelable(Obj.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Recomend> CREATOR = new Parcelable.Creator<Recomend>() {
+    public static final Parcelable.Creator<Recommend> CREATOR = new Parcelable.Creator<Recommend>() {
         @Override
-        public Recomend createFromParcel(Parcel source) {
-            return new Recomend(source);
+        public Recommend createFromParcel(Parcel source) {
+            return new Recommend(source);
         }
 
         @Override
-        public Recomend[] newArray(int size) {
-            return new Recomend[size];
+        public Recommend[] newArray(int size) {
+            return new Recommend[size];
         }
     };
 }

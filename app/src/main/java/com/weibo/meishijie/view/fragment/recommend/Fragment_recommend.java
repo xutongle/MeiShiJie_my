@@ -1,7 +1,7 @@
 package com.weibo.meishijie.view.fragment.recommend;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,30 +14,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.weibo.meishijie.R;
 import com.weibo.meishijie.adapter.FragmentViewPagerAdapter;
-import com.weibo.meishijie.adapter.Recommend_Zuireshangpin_Adapter;
 import com.weibo.meishijie.base.BaseFragment;
+import com.weibo.meishijie.base.recyclerView.CommonAdapter;
 import com.weibo.meishijie.base.recyclerView.HeaderdAndFooterWrapper;
+import com.weibo.meishijie.base.recyclerView.ViewHolder;
 import com.weibo.meishijie.bean.recommend.Fenlei;
 import com.weibo.meishijie.bean.recommend.Fun1;
 import com.weibo.meishijie.bean.recommend.Fun2;
 import com.weibo.meishijie.bean.recommend.Obj;
-import com.weibo.meishijie.bean.recommend.Recomend;
+import com.weibo.meishijie.bean.recommend.Recommend;
+import com.weibo.meishijie.bean.recommend.Shops;
 import com.weibo.meishijie.bean.recommend.Top3;
+import com.weibo.meishijie.bean.recommend.Top4;
+import com.weibo.meishijie.bean.recommend.Zt;
+import com.weibo.meishijie.bean.recommend.youlike.Data;
+import com.weibo.meishijie.bean.recommend.youlike.YouLike;
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
 import com.weibo.meishijie.presenter.recommend.RecommentView;
 import com.weibo.meishijie.presenter.recommend.imp.RecommendPresenterImp;
 import com.weibo.meishijie.util.DLog;
 import com.weibo.meishijie.util.ImageLoader;
-import com.weibo.meishijie.util.Internet_utils;
 import com.weibo.meishijie.view.activity.MainActivity;
 import com.weibo.meishijie.view.custom.ADViewpager;
 import com.weibo.meishijie.view.custom.ADViewpager_san_can;
-import com.weibo.meishijie.view.custom.NavigationBar_RadioButton;
+import com.weibo.meishijie.view.custom.RoundImageView;
 import com.weibo.meishijie.view.fragment.Fragment_san_can;
 
 import java.util.ArrayList;
@@ -46,8 +50,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class Fragment_recommend extends BaseFragment implements RecommentView {
 
@@ -59,6 +61,8 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
     private ADViewpager_san_can adViewpagerSancan;
     private ADViewpager top3VP;
     private MainActivity mainActivity;
+    private LinearLayoutCompat.LayoutParams layoutParams = new LinearLayoutCompat.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -68,14 +72,21 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
     }
 
     @Override
-    public void limnView(Recomend recomend) {
-        Obj obj = recomend.getObj();
+    public void limnView(Recommend recommend) {
+        Obj obj = recommend.getObj();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mainActivity, 2);
         zuireshangpin_re.setLayoutManager(gridLayoutManager);
-        Recommend_Zuireshangpin_Adapter adapter = new Recommend_Zuireshangpin_Adapter
-                (mainActivity, R.layout.zuireshangpin_item, Arrays.asList(obj.getShops()));
-        headerdAndFooterWrapper = new HeaderdAndFooterWrapper(adapter);
+        CommonAdapter<Shops> commonAdapter = new CommonAdapter<Shops>(
+                mainActivity, R.layout.zuireshangpin_item, Arrays.asList(obj.getShops())) {
+            @Override
+            public void convert(ViewHolder holder, Shops shops, int position) {
+                holder.setText(R.id.zuire_title,shops.getTitle());
+                holder.setTextAndColor(R.id.priceandguide,shops.getPrice() + "/" + shops.getGuige(), Color.RED);
+                holder.setImageViewSrc(R.id.zuire_image,shops.getImage());
+            }
+        };
+        headerdAndFooterWrapper = new HeaderdAndFooterWrapper(commonAdapter);
 
         addScan_canViewpager(obj);
         addFenlei(obj.getFenlei());
@@ -84,9 +95,91 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
         addTop3(obj.getTop3());
 
         addJinRiTuiJian();
+        addZt(obj.getZt());
+        addTop4(obj.getTop4());
+        addCainixihuan();
 
         zuireshangpin_re.setAdapter(headerdAndFooterWrapper);
         setTime();
+    }
+
+    @Override
+    public void loadYoulikeDataSuccess(YouLike youLike) {
+        String time = youLike.getObj().getCustomized().getTime();
+        TextView tv_time = new TextView(mainActivity);
+        tv_time.setLayoutParams(layoutParams);
+        tv_time.setGravity(Gravity.CENTER);
+        tv_time.setText(time);
+        headerdAndFooterWrapper.addFooterView(tv_time);
+
+        Data[] datas = youLike.getObj().getCustomized().getDatas();
+        if (datas == null || datas.length == 0){return;}
+        RecyclerView youlikeR = new RecyclerView(mainActivity);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mainActivity,2);
+        youlikeR.setLayoutManager(gridLayoutManager);
+        CommonAdapter<Data> commonAdapter = new CommonAdapter<Data>(
+                mainActivity,R.layout.youlike_item,Arrays.asList(datas)) {
+            @Override
+            public void convert(ViewHolder holder, Data data, int position) {
+                holder.setTextAndColor(R.id.tv_youlike,data.getTitle(), Color.WHITE);
+                holder.setImageViewSrc(R.id.iv_youlike,data.getTitlepic());
+            }
+        };
+        youlikeR.setAdapter(commonAdapter);
+        headerdAndFooterWrapper.addFooterView(youlikeR);
+    }
+
+    private void addCainixihuan(){
+        View cainixihuan = LayoutInflater.from(mainActivity).inflate(R.layout.zuireshangpin,null,false);
+        ImageView iconIv = findView(cainixihuan,R.id.icon_iv);
+        iconIv.setImageResource(R.mipmap.tj_guess_youlike);
+        TextView icon_Tv = findView(cainixihuan,R.id.icon_tv);
+        icon_Tv.setText(R.string.cainixihuan);
+        headerdAndFooterWrapper.addFooterView(cainixihuan);
+        recommendPresenter.loadYouLike();
+    }
+
+    private void addTop4(Top4[] top4s){
+        LinearLayout ztL = new LinearLayout(mainActivity);
+        ztL.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        ztL.setOrientation(LinearLayout.VERTICAL);
+        int length = top4s.length;
+        Top4 top4;
+        ImageView imageView;
+        for (int i = 0;i < length;i++){
+            top4 = top4s[i];
+            imageView = new ImageView(mainActivity);
+            imageView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,300));
+            imageView.setPadding(0,10,0,10);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ImageLoader.load(this,top4.getPhoto(),imageView);
+            ztL.addView(imageView);
+        }
+
+        headerdAndFooterWrapper.addFooterView(ztL);
+    }
+
+    private void addZt(Zt[] zts){
+        LinearLayout ztL = new LinearLayout(mainActivity);
+        ztL.setLayoutParams(layoutParams);
+        ztL.setOrientation(LinearLayout.VERTICAL);
+        int length = zts.length;
+        Zt zt;
+        RoundImageView riv;
+        for (int i = 0;i < length;i++){
+            zt = zts[i];
+            riv = new RoundImageView(mainActivity);
+            riv.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            riv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            ImageLoader.load(this,zt.getPhoto(),riv);
+            LinearLayout linearLayout = new LinearLayout(mainActivity);
+            linearLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300));
+            linearLayout.setPadding(10,10,10,10);
+            linearLayout.addView(riv);
+            ztL.addView(linearLayout);
+        }
+
+        headerdAndFooterWrapper.addFooterView(ztL);
     }
 
     private void addJinRiTuiJian(){
@@ -164,7 +257,7 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
             image.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100));
 
             TextView title = new TextView(mainActivity);
-            title.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            title.setLayoutParams(layoutParams);
             title.setGravity(Gravity.CENTER);
 
             ImageLoader.load(this,fenlei.getImage(),image);

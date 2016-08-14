@@ -1,7 +1,6 @@
 package com.weibo.meishijie.model.recommend;
 
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
-import com.weibo.meishijie.util.DLog;
 import com.weibo.meishijie.util.OkUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -29,6 +28,17 @@ public class RecommendModelImp implements RecommendModel {
                     presenter.OnloadDataSuccess(tuiJian);
                 }, throwable -> {
                     presenter.OnloadDataError(throwable);
+                });
+    }
+
+    @Override
+    public void loadYouLikeData() {
+        OkUtil.createRetrofit().create(YouLikeApi.class)
+                .getYouLikeData(OkUtil.getYouLikeMap())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(youLike -> {
+                   presenter.OnloadYouLikeDataSuccess(youLike);
                 });
     }
 

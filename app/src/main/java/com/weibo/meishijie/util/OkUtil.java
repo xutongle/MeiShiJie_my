@@ -71,4 +71,13 @@ public class OkUtil {
         map.put("source","android");
         return map;
     }
+
+    //lon=&app_liketime=1469849711&source=android&page=2&lat=&format=json&
+    public static Map<String,String> getYouLikeMap(){
+        Map<String,String> map = getTuijianMap();
+        map.put("app_liketime","1469849711");
+        map.put("page","2");
+        return map;
+    }
+
 }

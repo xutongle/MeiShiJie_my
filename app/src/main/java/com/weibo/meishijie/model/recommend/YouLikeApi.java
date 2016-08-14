@@ -1,6 +1,6 @@
 package com.weibo.meishijie.model.recommend;
 
-import com.weibo.meishijie.bean.recommend.Recommend;
+import com.weibo.meishijie.bean.recommend.youlike.YouLike;
 import com.weibo.meishijie.util.Constant;
 
 import java.util.Map;
@@ -11,11 +11,11 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 /**
- * Created by 美貌与智慧并重的男子 on 2016/7/30.
+ * Created by 巴巴 on 2016/8/14.
  */
 
-public interface RecommendApi {
+public interface YouLikeApi {
     @POST(Constant.DATA_INDEX)
     @FormUrlEncoded
-    Observable<Recommend> getRecommendData(@FieldMap() Map<String,String> map);
+    Observable<YouLike> getYouLikeData(@FieldMap() Map<String,String> map);
 }

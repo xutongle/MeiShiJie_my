@@ -6,4 +6,5 @@ package com.weibo.meishijie.model.recommend;
 
 public interface RecommendModel {
     void loadData();
+    void loadYouLikeData();
 }
