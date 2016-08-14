@@ -1,8 +1,7 @@
 package com.weibo.meishijie.model.recommend;
 
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
-import com.weibo.meishijie.util.Internet_utils;
-import com.weibo.meishijie.util.MainApp;
+import com.weibo.meishijie.util.DLog;
 import com.weibo.meishijie.util.OkUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,19 +20,16 @@ public class RecommendModelImp implements RecommendModel {
     }
 
     @Override
-    public void Load() {
+    public void loadData() {
         OkUtil.createRetrofit().create(RecommendApi.class)
-                .getTuijianData(OkUtil.getTuijianMap())
+                .getRecommendData(OkUtil.getTuijianMap())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tuiJian -> {
-                    presenter.loadData(tuiJian);
+                    presenter.OnloadDataSuccess(tuiJian);
+                }, throwable -> {
+                    presenter.OnloadDataError(throwable);
                 });
-    }
-
-    @Override
-    public void update() {
-
     }
 
 }

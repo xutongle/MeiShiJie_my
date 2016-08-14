@@ -20,13 +20,18 @@ public class RecommendPresenterImp implements RecommendPresenter{
     }
 
     @Override
-    public void loadData(Recomend recomend) {
+    public void onStart() {
+        model = new RecommendModelImp(this);
+        model.loadData();
+    }
+
+    @Override
+    public void OnloadDataSuccess(Recomend recomend) {
         recommentView.limnView(recomend);
     }
 
     @Override
-    public void onStart() {
-        model = new RecommendModelImp(this);
-        model.Load();
+    public void OnloadDataError(Throwable throwable) {
+
     }
 }

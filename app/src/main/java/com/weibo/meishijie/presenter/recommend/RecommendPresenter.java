@@ -8,5 +8,6 @@ import com.weibo.meishijie.presenter.BasePresenter;
  */
 
 public interface RecommendPresenter extends BasePresenter{
-    void loadData(Recomend recomend);
+    void OnloadDataSuccess(Recomend recomend);
+    void OnloadDataError(Throwable throwable);
 }

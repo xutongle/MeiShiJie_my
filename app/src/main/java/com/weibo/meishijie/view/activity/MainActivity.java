@@ -12,10 +12,10 @@ import com.weibo.meishijie.util.CacheUtil;
 import com.weibo.meishijie.util.Constant;
 import com.weibo.meishijie.util.MainApp;
 import com.weibo.meishijie.view.fragment.Fragment_discover;
-import com.weibo.meishijie.view.fragment.Fragment_recommend;
 import com.weibo.meishijie.view.fragment.Fragment_shop;
 import com.weibo.meishijie.view.fragment.Fragment_topic;
 import com.weibo.meishijie.view.fragment.Fragment_wode;
+import com.weibo.meishijie.view.fragment.recommend.Fragment_recommend;
 
 import butterknife.BindView;
 

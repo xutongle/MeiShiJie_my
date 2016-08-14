@@ -23,8 +23,11 @@ import com.weibo.meishijie.adapter.Recommend_Zuireshangpin_Adapter;
 import com.weibo.meishijie.base.BaseFragment;
 import com.weibo.meishijie.base.recyclerView.HeaderdAndFooterWrapper;
 import com.weibo.meishijie.bean.recommend.Fenlei;
+import com.weibo.meishijie.bean.recommend.Fun1;
+import com.weibo.meishijie.bean.recommend.Fun2;
 import com.weibo.meishijie.bean.recommend.Obj;
 import com.weibo.meishijie.bean.recommend.Recomend;
+import com.weibo.meishijie.bean.recommend.Top3;
 import com.weibo.meishijie.presenter.recommend.RecommendPresenter;
 import com.weibo.meishijie.presenter.recommend.RecommentView;
 import com.weibo.meishijie.presenter.recommend.imp.RecommendPresenterImp;
@@ -32,6 +35,7 @@ import com.weibo.meishijie.util.DLog;
 import com.weibo.meishijie.util.ImageLoader;
 import com.weibo.meishijie.util.Internet_utils;
 import com.weibo.meishijie.view.activity.MainActivity;
+import com.weibo.meishijie.view.custom.ADViewpager;
 import com.weibo.meishijie.view.custom.ADViewpager_san_can;
 import com.weibo.meishijie.view.custom.NavigationBar_RadioButton;
 import com.weibo.meishijie.view.fragment.Fragment_san_can;
@@ -50,10 +54,11 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
     @BindView(R.id.zuireshangpin_Recycleview)
     RecyclerView zuireshangpin_re;
 
-    private ADViewpager_san_can adViewpagerSancan;
-    private HeaderdAndFooterWrapper headerdAndFooterWrapper;
-    private MainActivity mainActivity;
     private RecommendPresenter recommendPresenter;
+    private HeaderdAndFooterWrapper headerdAndFooterWrapper;
+    private ADViewpager_san_can adViewpagerSancan;
+    private ADViewpager top3VP;
+    private MainActivity mainActivity;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -74,9 +79,72 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
 
         addScan_canViewpager(obj);
         addFenlei(obj.getFenlei());
+        addFun(obj);
+        addZuiReShangPin();
+        addTop3(obj.getTop3());
+
+        addJinRiTuiJian();
 
         zuireshangpin_re.setAdapter(headerdAndFooterWrapper);
         setTime();
+    }
+
+    private void addJinRiTuiJian(){
+        View jinrituijianL = LayoutInflater.from(mainActivity).inflate(R.layout.jinrituijain,null,false);
+        ImageView iconIv = findView(jinrituijianL,R.id.icon_iv);
+        iconIv.setImageResource(R.mipmap.tj_zhuanti);
+        TextView icon_Tv = findView(jinrituijianL,R.id.icon_tv);
+        icon_Tv.setText(R.string.jinrituijian);
+        headerdAndFooterWrapper.addFooterView(jinrituijianL);
+    }
+
+    private void addTop3(Top3[] top3){
+        top3VP = new ADViewpager(mainActivity);
+        top3VP.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,200));
+        top3VP.setAdapter(new ADViewpager.CommonViewPagerAdapter<Top3>(Arrays.asList(top3)) {
+            @Override
+            public View convert(Top3 top3, int position) {
+                ImageView imageView = new ImageView(mainActivity);
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                ImageLoader.load(Fragment_recommend.this,top3.getPhoto(),imageView);
+                return imageView;
+            }
+        });
+        top3VP.setIcon(R.mipmap.recipes_select_true,R.mipmap.recipes_select_false);
+        top3VP.setIconGravity(Gravity.CENTER);
+        top3VP.startCycle();
+        headerdAndFooterWrapper.addHearderView(top3VP);
+    }
+
+    private void addZuiReShangPin(){
+        View zuireL = LayoutInflater.from(mainActivity).inflate(R.layout.zuireshangpin,null,false);
+        headerdAndFooterWrapper.addHearderView(zuireL);
+    }
+
+    private void addFun(Obj obj){
+        LinearLayout funL = new LinearLayout(mainActivity);
+        funL.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200));
+        funL.setGravity(Gravity.CENTER);
+
+        Fun1 fun1 = obj.getFunc1();
+        ImageView imageView1 = getFunImageView();
+        funL.addView(imageView1);
+        ImageLoader.load(this,fun1.getImage(),imageView1);
+
+        Fun2 fun2 = obj.getFunc2();
+        ImageView imageView2 = getFunImageView();
+        funL.addView(imageView2);
+        ImageLoader.load(this,fun2.getImage(),imageView2);
+
+        headerdAndFooterWrapper.addHearderView(funL);
+    }
+
+    private ImageView getFunImageView(){
+        ImageView imageView = new ImageView(mainActivity);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1));
+        imageView.setPadding(5,0,5,0);
+        return imageView;
     }
 
     private void addFenlei(Fenlei[] fenleis){
@@ -156,6 +224,12 @@ public class Fragment_recommend extends BaseFragment implements RecommentView {
             adViewpagerSancan.setCurrentItem(0);
         }
         c.clear();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        top3VP.recycle();
     }
 
     @Override

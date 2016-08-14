@@ -17,5 +17,5 @@ import rx.Observable;
 public interface RecommendApi {
     @POST(Constant.DATA_INDEX)
     @FormUrlEncoded
-    Observable<Recomend> getTuijianData(@FieldMap() Map<String,String> map);
+    Observable<Recomend> getRecommendData(@FieldMap() Map<String,String> map);
 }

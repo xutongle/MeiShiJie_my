@@ -89,7 +89,7 @@ public class IrregularImageView extends View {
 
             postInvalidate();
         };
-        MainApp.getService().execute(runnable);
+        MainApp.getService().submit(runnable);
     }
 
     private boolean bitmapIsNull(Bitmap... bitmaps) {

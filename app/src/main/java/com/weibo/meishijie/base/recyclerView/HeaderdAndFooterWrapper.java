@@ -7,6 +7,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.weibo.meishijie.util.DLog;
+
 /**
  * Created by Administrator on 2016/7/9.
  */
@@ -16,7 +18,8 @@ public class HeaderdAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.V
     private SparseArrayCompat<View> footerViews = new SparseArrayCompat<>();
 
     private static final int BASE_ITEM_TYPE_HEARDER = 100000;
-    private static final int BASE_ITEM_TYPE_FOOTER = 100000;
+    private static final int BASE_ITEM_TYPE_FOOTER = 200000;
+    private int c;
 
     private RecyclerView.Adapter adapter;
 
@@ -35,6 +38,7 @@ public class HeaderdAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
+        DLog.info("===" + viewType);
         if (headerViews.get(viewType) != null){
             view = headerViews.get(viewType);
         }else if (footerViews.get(viewType) != null){

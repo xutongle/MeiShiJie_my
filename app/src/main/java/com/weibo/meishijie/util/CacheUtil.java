@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -196,10 +197,10 @@ public class CacheUtil {
         if (bitmap != null) {
             return bitmap;
         }
-        FileInputStream fileInputStream = null;
-        DiskLruCache.Snapshot snapShot = null;
+        DiskLruCache.Snapshot snapShot;
         BufferedOutputStream out = null;
         BufferedInputStream in = null;
+        InputStream bitmapInputStream = null;
         try {
             // 生成图片URL对应的key
             final String key = hashKeyForDisk(imageUrl);
@@ -213,7 +214,8 @@ public class CacheUtil {
                     Request request = new Request.Builder().get().url(imageUrl).build();
                     Response response = OkUtil.getOkhttpClient().newCall(request).execute();
                     if (response.isSuccessful()) {
-                        in = new BufferedInputStream(response.body().byteStream(), 8 * 1024);
+                        bitmapInputStream = response.body().byteStream();
+                        in = new BufferedInputStream(bitmapInputStream, 8 * 1024);
                         out = new BufferedOutputStream(outputStream, 8 * 1024);
                         int b;
                         while ((b = in.read()) != -1) {
@@ -224,18 +226,17 @@ public class CacheUtil {
                         editor.abort();
                     }
                 }
-                // 缓存被写入后，再次查找key对应的缓存
-                snapShot = mDiskLruCache.get(key);
+            }else if (snapShot != null) {
+                bitmapInputStream = snapShot.getInputStream(0);
             }
-            if (snapShot != null) {
-                fileInputStream = (FileInputStream) snapShot.getInputStream(0);
-                bitmap = BitmapUtil.decodeBitmapFromStream(fileInputStream, requestW, requestH);
+            if (bitmapInputStream != null) {
+                bitmap = BitmapUtil.decodeBitmapFromStream(bitmapInputStream, requestW, requestH);
                 addBitmapToMemoryCache(imageUrl, bitmap);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            close(fileInputStream,in,out);
+            close(bitmapInputStream,in,out);
         }
         return bitmap;
     }

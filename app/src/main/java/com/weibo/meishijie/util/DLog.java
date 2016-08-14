@@ -170,8 +170,8 @@ public class DLog {
 	public static void debug(Object msg){
 		d(TAG,msg.toString());
 	}
-	public static void info(String msg) {
-			i(TAG, msg);
+	public static void info(Object msg) {
+			i(TAG, msg.toString());
 	}
 //======================== 指定使用默认 TAG 结束  ========================//
 }
